@@ -1,44 +1,60 @@
 package com.eremin.textquestservlets.service;
 
 import com.eremin.textquestservlets.model.Answer;
+import com.eremin.textquestservlets.model.Question;
 import com.eremin.textquestservlets.model.Root;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.eremin.textquestservlets.consts.Const.PATH_TO_JSON;
+import static com.eremin.textquestservlets.consts.Const.*;
 
-@Getter
+
 @Slf4j
 public class QuestionService {
+    private final Root data;
 
-    private Root data;
-
-    public QuestionService() {
-
-        try {
-            Path path = Paths.get(getClass().getClassLoader().getResource(PATH_TO_JSON).toURI());
-            Stream<String> streamLines = Files.lines(path);
-            String lines = streamLines.collect(Collectors.joining("\n"));
-            this.data = new ObjectMapper().readValue(lines, Root.class);
-            streamLines.close();
-        } catch (URISyntaxException | IOException e) {
-            log.error(e.getMessage());
-        }
+    public QuestionService(ServletContext context) {
+        DataService dataService = (DataService) context.getAttribute(DATA_SERVICE);
+        this.data = dataService.getData();
     }
 
     public List<Answer> getAnswersByQuestionId(Integer questionId) {
-        return new ArrayList<>();
+
+        Question question = data.getQuestions().stream()
+                .filter(q -> (q.getId() == questionId))
+                .findFirst()
+                .orElse(null);
+
+        if (question != null) {
+            List<Integer> answersIds = question.getAnswers();
+            return data.getAnswers().stream()
+                    .filter(answer -> answersIds.contains(answer.getId()))
+                    .collect(Collectors.toList());
+        } else {
+            log.error("question is null. Cant find Answers by QuestionId");
+            throw new RuntimeException("question is null");
+        }
     }
 
+    public Question findQuestionByAnswerId(Integer answerId) {
+
+        Answer answer = data.getAnswers().stream()
+                .filter(el -> el.getId() == answerId)
+                .findFirst()
+                .orElse(null);
+
+        if (answer != null) {
+            return data.getQuestions()
+                    .stream()
+                    .filter(question -> question.getId() == answer.getNextQuestion())
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            log.error("answer is null. Cant find question by answerId");
+            throw new RuntimeException("answer is null");
+        }
+    }
 }

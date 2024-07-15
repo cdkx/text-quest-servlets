@@ -49,44 +49,32 @@
     {
       "id": 1,
       "name": "Принять вызов",
-      "question": [
-        3
-      ]
+      "nextQuestion": 3
     },
     {
       "id": 2,
       "name": "Отклонить вызов",
-      "question": [
-        2
-      ]
+      "nextQuestion": 2
     },
     {
       "id": 3,
       "name": "Подняться на мостик",
-      "question": [
-        4
-      ]
+      "nextQuestion": 4
     },
     {
       "id": 4,
       "name": "Отказаться подниматься на мостик",
-      "question": [
-        6
-      ]
+      "nextQuestion": 6
     },
     {
       "id": 5,
       "name": "Рассказать правду",
-      "question": [
-        5
-      ]
+      "nextQuestion": 5
     },
     {
       "id": 6,
       "name": "Солгать",
-      "question": [
-        7
-      ]
+      "nextQuestion": 7
     }
   ]
 }
