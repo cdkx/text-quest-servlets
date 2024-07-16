@@ -5,7 +5,6 @@ import com.eremin.textquestservlets.model.Root;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +15,6 @@ import static com.eremin.textquestservlets.consts.Const.*;
 
 
 @Getter
-@Slf4j
 public class DataService {
     private final Root data;
 

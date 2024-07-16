@@ -11,10 +11,12 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.eremin.textquestservlets.consts.Const.*;
 
 
+@Slf4j
 @WebServlet(name = QUESTION_SERVLET, value = SLASH + QUESTION)
 public class QuestionServlet extends HttpServlet {
     private QuestionService questionService;

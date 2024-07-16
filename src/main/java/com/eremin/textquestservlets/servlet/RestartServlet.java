@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import static com.eremin.textquestservlets.consts.Const.*;
 
+
 @WebServlet(name = RESTART_SERVLET, value = SLASH + RESTART)
 public class RestartServlet extends HttpServlet {
 
