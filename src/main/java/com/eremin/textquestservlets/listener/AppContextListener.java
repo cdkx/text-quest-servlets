@@ -21,20 +21,21 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
+
+        log.debug("creating objectMapper");
         ObjectMapper objectMapper = new ObjectMapper();
-        log.debug("create objectMapper");
+        log.debug("setting objectMapper");
         context.setAttribute(OBJECT_MAPPER, objectMapper);
-        log.debug("set objectMapper");
 
-        DataService dataService = new DataService(context);
-        log.debug("create dataService");
+        log.debug("creating dataService");
+        DataService dataService = new DataService(objectMapper);
+        log.debug("setting dataService");
         context.setAttribute(DATA_SERVICE, dataService);
-        log.debug("set dataService");
 
-        QuestionService questionService = new QuestionService(context);
-        log.debug("create questionService");
+        log.debug("creating questionService");
+        QuestionService questionService = new QuestionService(dataService);
+        log.debug("setting questionService");
         context.setAttribute(QUESTION_SERVICE, questionService);
-        log.debug("set questionService");
 
         ServletContextListener.super.contextInitialized(sce);
         log.debug("context initialized");
