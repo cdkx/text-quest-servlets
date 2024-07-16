@@ -12,12 +12,11 @@
 <h2>${question.getQuestion()}</h2>
 <form action="${pageContext.request.contextPath}/question" method="get">
     <p>
-        <input name="answerId" type="radio" value="${answer_1.getId()}">${answer_1.getName()}
+        <input name="answerId" type="radio" value="${answer_1.getId()}"> ${answer_1.getName()}
         <br>
-        <input name="answerId" type="radio" value="${answer_2.getId()}">${answer_2.getName()}
+        <input name="answerId" type="radio" value="${answer_2.getId()}"> ${answer_2.getName()}
     </p>
     <p><input type="submit" value="Ответить"></p>
-
 </form>
 </body>
 </html>

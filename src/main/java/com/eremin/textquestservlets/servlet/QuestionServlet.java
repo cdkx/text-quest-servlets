@@ -29,13 +29,10 @@ public class QuestionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        List<Question> questions = dataService.getData().getQuestions();
-
-        if (req.getParameter(ANSWER) == null) {
-            sendRequest(req, resp, questions.getFirst());
+        if (req.getParameter(ANSWER_ID) == null) {
+            sendRequest(req, resp, dataService.getData().getQuestions().getFirst());
         } else {
-            String answerId = req.getParameter(ANSWER);
+            String answerId = req.getParameter(ANSWER_ID);
             Integer currentAnswerId = Integer.parseInt(answerId);
             Question questionToRequest = questionService.getQuestionByAnswerId(currentAnswerId);
             sendRequest(req, resp, questionToRequest);
@@ -45,24 +42,13 @@ public class QuestionServlet extends HttpServlet {
     private void sendRequest(HttpServletRequest req, HttpServletResponse resp, Question questionToRequest) throws ServletException, IOException {
         req.setAttribute(QUESTION, questionToRequest);
 
+        if (questionToRequest.isFailed() || questionToRequest.isSuccess()) {
+            getServletContext().getRequestDispatcher(RESTART_JSP).forward(req, resp);
+        }
+
         List<Answer> answers = questionService.getAnswersByQuestionId(questionToRequest.getId());
-
-        if (questionToRequest.isFailed()) {
-            req.setAttribute(ANSWER_1, answers.get(0));
-            req.setAttribute(ANSWER_2, answers.get(1));
-            getServletContext().getRequestDispatcher(RESTART_JSP).forward(req, resp);
-        }
-
-        if (questionToRequest.isSuccess()) {
-            req.setAttribute(ANSWER_1, answers.get(0));
-            req.setAttribute(ANSWER_2, answers.get(1));
-            getServletContext().getRequestDispatcher(RESTART_JSP).forward(req, resp);
-        }
-
         req.setAttribute(ANSWER_1, answers.get(0));
         req.setAttribute(ANSWER_2, answers.get(1));
-
         getServletContext().getRequestDispatcher(QUESTION_JSP).forward(req, resp);
-
     }
 }

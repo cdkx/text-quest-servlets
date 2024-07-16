@@ -7,12 +7,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet
+import static com.eremin.textquestservlets.consts.Const.*;
+
+@WebServlet(name = RESTART_SERVLET, value = SLASH + RESTART)
 public class RestartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession().invalidate();
-        resp.sendRedirect("/question");
+        resp.sendRedirect(QUESTION);
     }
 }
